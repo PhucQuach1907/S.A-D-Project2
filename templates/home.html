@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+  {% block content %} 
+    {% if books %} 
+      {% for book in books %}
+        <div style="border: 1px solid; width: 70vw; margin: 10px">
+          <p style="margin-left: 10px">Name: {{ book.name }}</p>
+          <p style="margin-left: 10px">Author: {{ book.author }}</p>
+          <p style="margin-left: 10px">Publisher: {{ book.publisher }}</p>
+          <p style="margin-left: 10px">Price: {{ book.price }}</p>
+          <form method=POST action="{% url 'add_to_cart' book.id %}">
+            {% csrf_token %}
+            <button type="submit">Add To Cart</button>
+          </form>
+        </div>
+      {% endfor %} 
+    {% endif %} 
+  {% endblock content %}
