@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from book.models import Book
 
@@ -17,20 +18,12 @@ class CartItem(models.Model):
             return book
         except Book.DoesNotExist:
             return None
-        
-    def price(self):
-        return self.get_book.price
 
     @property
     def subtotal(self):
-        return self.quantity * self.get_book.price
+        book = self.get_book()
+        price_decimal = Decimal(str(book.price))
+        return self.quantity * price_decimal
 
     def __str__(self):
         return self.get_book.name
-    
-def total():
-    cart_items = CartItem.objects.all()
-    total = 0
-    for item in cart_items:
-        total += item.subtotal
-    return total

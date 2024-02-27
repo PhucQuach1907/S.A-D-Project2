@@ -1,5 +1,10 @@
 {% extends "base.html" %} 
   {% block content %} 
+    <form method=POST action="{% url 'search_books' %}">
+      {% csrf_token %}
+      <input type="text" name="searched" placeholder="Search books..." />
+      <button type="submit">Search</button>
+    </form>
     {% if books %} 
       {% for book in books %}
         <div style="border: 1px solid; width: 70vw; margin: 10px">
@@ -7,7 +12,7 @@
           <p style="margin-left: 10px">Author: {{ book.author }}</p>
           <p style="margin-left: 10px">Publisher: {{ book.publisher }}</p>
           <p style="margin-left: 10px">Price: {{ book.price }}</p>
-          <form method=POST action="{% url 'add_to_cart' book.id %}">
+          <form method=POST action="{% url 'add_to_cart' book.id %}" style="margin: 10px">
             {% csrf_token %}
             <button type="submit">Add To Cart</button>
           </form>
