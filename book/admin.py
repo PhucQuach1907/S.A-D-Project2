@@ -1,19 +1,37 @@
 from django.contrib import admin
 from .models import *
+from .forms import BookAdminForm
 
-@admin.register(Author)
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+class BaseMongoAdmin(admin.ModelAdmin):
+    using = 'mongodb'
 
-@admin.register(Publisher)
-class PublisherAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    def save_model(self, request, obj, form, change):
+        obj.save(using=self.using)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).using(self.using)
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+class CategoryAdmin(BaseMongoAdmin):
+    list_display = ('name', 'description')
 
 @admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'author', 'publisher', 'price']
-    raw_id_fields = ['categories']
+class BookAdmin(BaseMongoAdmin):
+    form = BookAdminForm
+    list_display = ('name', 'quantity', 'author', 'publisher', 'price')
+    list_display_links = ('name',)
+    list_per_page = 50
+    list_filter = ('author', 'publisher', 'categories')
+    search_fields = ('name', 'author__name', 'publisher__name')
+
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'quantity', 'price')
+        }),
+        ('Categorization', {
+            'fields': ('categories',)
+        }),
+        ('Associations', {
+            'fields': ('author', 'publisher')
+        }),
+    )

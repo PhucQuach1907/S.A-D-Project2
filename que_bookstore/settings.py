@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book',
     'cart',
+    'djongo'
 ]
 
 MIDDLEWARE = [
@@ -84,16 +85,18 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306'
     },
-    # 'mongodb': {
-    #     'ENGINE': 'djongo',
-    #     'NAME': 'bookstore',
-    #     'ENFORCE_SCHEMA': False,
-    #     'CLIENT': {
-    #         'host': 'mongodb://localhost:27017/',
-    #         'authSource': 'admin',
-    #     }
-    # }
+    'mongodb': {
+        'ENGINE': 'djongo',
+        'NAME':'bookstore',
+        'HOST': 'localhost',
+        'PORT': 27017,
+    }
 }
+
+DATABASE_ROUTERS = [
+    'book.routers.BookRouter',
+    'cart.routers.CartRouter',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
