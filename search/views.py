@@ -1,4 +1,5 @@
 import numpy as np
+import speech_recognition as sr
 import tensorflow as tf
 from PIL import Image
 from django.shortcuts import render
@@ -62,3 +63,19 @@ def search_by_image(request):
     context = {'books': books}
 
     return render(request, 'search_results.html', {'context': context})
+
+
+def search_by_voice(request):
+    recognizer = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+
+    searched = recognizer.recognize_google(audio)
+    books = Book.objects.filter(name__icontains=searched).order_by('name')
+
+    context = {
+        'books': books
+    }
+    return render(request, 'search_results.html', {'context': context, 'searched': searched})

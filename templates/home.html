@@ -46,13 +46,21 @@
 
         .search_by_image label {
             display: flex;
-            width: 260px;
+            width: 14vw;
             border: 3px solid #00B4CC;
             justify-content: center;
         }
 
         .search_by_image input {
             display: none;
+        }
+        
+        #search_by_voice {
+            border: 3px solid #00B4CC;
+            width: 12vw;
+            font-weight: 500;
+            font-size: 1.2vw;
+            background: white;
         }
 
         .book_container {
@@ -91,7 +99,11 @@
               action="{% url 'search_by_image' %}">
             {% csrf_token %}
             <input type="file" id="image" name="image" accept="image/*" onchange="submitForm()">
-            <label for="image" class="choose-image">Choose Image to Search</label>
+            <label for="image" class="choose-image">Search by Image</label>
+        </form>
+        <form class="search_by_voice" method="POST" action="{% url 'search_by_voice' %}">
+            {% csrf_token %}
+            <button id="search_by_voice" type="submit">Search by Voice</button>
         </form>
     </div>
     {% for book in books %}
