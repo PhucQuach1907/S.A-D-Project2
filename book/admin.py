@@ -18,7 +18,7 @@ class CategoryAdmin(BaseMongoAdmin):
 @admin.register(Book)
 class BookAdmin(BaseMongoAdmin):
     form = BookAdminForm
-    list_display = ('name', 'quantity', 'author', 'publisher', 'price')
+    list_display = ('image', 'name', 'quantity', 'author', 'publisher', 'price')
     list_display_links = ('name',)
     list_per_page = 50
     list_filter = ('author', 'publisher', 'categories')
@@ -26,7 +26,7 @@ class BookAdmin(BaseMongoAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'quantity', 'price')
+            'fields': ('image', 'name', 'quantity', 'price')
         }),
         ('Categorization', {
             'fields': ('categories',)
