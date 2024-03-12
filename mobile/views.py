@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Book
+from .models import *
 from cart.models import CartItem
 
-def HomeView(request):
-    books = Book.objects.all().order_by('name')
-    return render(request, 'home_book.html', {'books': books})
+def HomeMobileView(request):
+    mobiles = Mobile.objects.all().order_by('name')
+    return render(request, 'home_mobile.html', {'mobiles': mobiles})
 
 def add_to_cart(request, book_id):
-    book = Book.objects.get(id=book_id)
-    if book:
+    mobile = Mobile.objects.get(id=book_id)
+    if mobile:
         cart_item, created = CartItem.objects.get_or_create(book_id=book_id)
         if not created:
             cart_item.quantity += 1

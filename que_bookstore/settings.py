@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'book',
     'cart',
     'djongo',
-    'search'
+    'search',
+    'mobile'
 ]
 
 MIDDLEWARE = [
@@ -98,6 +99,7 @@ DATABASES = {
 DATABASE_ROUTERS = [
     'book.routers.BookRouter',
     'cart.routers.CartRouter',
+    'mobile.routers.MobileRouter'
 ]
 
 # Password validation
