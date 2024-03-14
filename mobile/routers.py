@@ -11,8 +11,8 @@ class MobileRouter:
 
     def allow_relation(self, obj1, obj2, **hints):
         if (
-            obj1._meta.app_label == 'mobile' and
-            obj2._meta.app_label == 'mobile'
+                obj1._meta.app_label == 'mobile' and
+                obj2._meta.app_label == 'mobile'
         ):
             return True
         return None

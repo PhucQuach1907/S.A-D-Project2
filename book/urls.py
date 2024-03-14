@@ -1,7 +1,9 @@
 from django.urls import path
+from django.views.generic import TemplateView
+
 from .views import *
 
 urlpatterns = [
-    path('', HomeView, name='home'),
-    path('add/<int:book_id>/', add_to_cart, name='add_to_cart'),
+    path('', TemplateView.as_view(template_name='home_book.html'), name='home_book'),
+    path('books/<int:pk>/', BookViewAPI.as_view({'post': 'add_to_cart'}), name='add-to-cart'),
 ]

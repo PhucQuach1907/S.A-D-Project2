@@ -1,9 +1,14 @@
 from decimal import Decimal
+
 from django.db import models
+
 from book.models import Book
+from mobile.models import Mobile
+
 
 class CartItem(models.Model):
-    book_id = models.CharField(max_length=50)
+    product_id = models.CharField(max_length=50)
+    type = models.CharField(max_length=50, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -12,18 +17,26 @@ class CartItem(models.Model):
     class Meta:
         db_table = 'cart_items'
 
-    def get_book(self):
-        try:
-            book = Book.objects.using('mongodb').get(id=self.book_id)
-            return book
-        except Book.DoesNotExist:
-            return None
+    def get_product(self):
+
+        if self.type == 'book':
+            try:
+                book = Book.objects.using('mongodb').get(id=self.product_id)
+                return book
+            except Book.DoesNotExist:
+                return None
+        elif self.type == 'mobile':
+            try:
+                mobile = Mobile.objects.using('mongodb').get(id=self.product_id)
+                return mobile
+            except Mobile.DoesNotExist:
+                return None
 
     @property
     def subtotal(self):
-        book = self.get_book()
-        price_decimal = Decimal(str(book.price))
+        product = self.get_product()
+        price_decimal = Decimal(str(product.price))
         return self.quantity * price_decimal
 
     def __str__(self):
-        return self.get_book.name
+        return self.get_product().name

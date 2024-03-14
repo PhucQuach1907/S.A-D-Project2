@@ -3,24 +3,39 @@ import speech_recognition as sr
 import tensorflow as tf
 from PIL import Image
 from django.shortcuts import render
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from book.models import Book
 from mobile.models import Mobile
+from book.serializers import BookSerializer
+from mobile.serializers import MobileSerializer
 
 
 # Create your views here.
-def search(request):
-    searched = request.GET.get('searched')
-    if searched:
-        books = Book.objects.filter(name__icontains=searched).order_by('name')
-        # mobile = Mobile.objects.filter(name__icontains=searched).order_by('name')
-    else:
-        books = Book.objects.all().order_by('name')
+class SearchBookAPI(APIView):
+    def get(self, request):
+        searched = request.GET.get('searched')
+        if searched:
+            books = Book.objects.filter(name__icontains=searched).order_by('name')
+        else:
+            books = Book.objects.none()
 
-    context = {
-        'books': books
-    }
-    return render(request, 'search_results.html', {'context': context, 'searched': searched})
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SearchMobileAPI(APIView):
+    def get(self, request):
+        searched = request.GET.get('searched')
+        if searched:
+            mobiles = Mobile.objects.filter(name__icontains=searched).order_by('name')
+        else:
+            mobiles = Mobile.objects.none()
+
+        serializer = MobileSerializer(mobiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 model = tf.keras.applications.VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
@@ -61,7 +76,7 @@ def search_by_image(request):
 
     context = {'books': books}
 
-    return render(request, 'search_results.html', {'context': context})
+    return render(request, 'search.html', {'context': context})
 
 
 def search_by_voice(request):
@@ -77,4 +92,4 @@ def search_by_voice(request):
     context = {
         'books': books
     }
-    return render(request, 'search_results.html', {'context': context, 'searched': searched})
+    return render(request, 'search.html', {'context': context, 'searched': searched})

@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import *
+
 from .forms import BookAdminForm
+from .models import *
+
 
 class BaseMongoAdmin(admin.ModelAdmin):
     using = 'mongodb'
@@ -11,9 +13,11 @@ class BaseMongoAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).using(self.using)
 
+
 @admin.register(Category)
 class CategoryAdmin(BaseMongoAdmin):
     list_display = ('name', 'description')
+
 
 @admin.register(Book)
 class BookAdmin(BaseMongoAdmin):

@@ -1,21 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if cart_items %}
-        {% for item in cart_items %}
-            <div style="border: 1px solid; width: 70vw; margin: 10px">
-                <p style="margin-left: 10px">Name: {{ item.get_book.name }}</p>
-                <p style="margin-left: 10px">Author: {{ item.get_book.author }}</p>
-                <p style="margin-left: 10px">Publisher: {{ item.get_book.publisher }}</p>
-                <p style="margin-left: 10px">Quantity: {{ item.quantity }}</p>
-                <p style="margin-left: 10px">Subtotal: {{ item.subtotal }}</p>
-                <form method=POST action="{% url 'remove_from_cart' item.get_book.id %}" style="margin: 10px">
-                    {% csrf_token %}
-                    <button type="submit">Remove From Cart</button>
-                </form>
-            </div>
-        {% endfor %}
-        <h1>Total: {{ total }}</h1>
-    {% else %}
-        <div>There are no books in cart!</div>
-    {% endif %}
+    <div id="cart-items"></div>
+    <h1>Total: <span id="total"></span></h1>
+    <script>
+        displayCartItems();
+    </script>
 {% endblock content %}

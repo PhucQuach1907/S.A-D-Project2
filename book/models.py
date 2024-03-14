@@ -1,5 +1,6 @@
 from djongo import models
 
+
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
@@ -9,6 +10,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Book(models.Model):
     image = models.ImageField(upload_to='images/', null=True, blank=True)

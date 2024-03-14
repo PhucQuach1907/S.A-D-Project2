@@ -11,8 +11,8 @@ class BookRouter:
 
     def allow_relation(self, obj1, obj2, **hints):
         if (
-            obj1._meta.app_label == 'book' and
-            obj2._meta.app_label == 'book'
+                obj1._meta.app_label == 'book' and
+                obj2._meta.app_label == 'book'
         ):
             return True
         return None

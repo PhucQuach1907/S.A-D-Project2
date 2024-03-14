@@ -11,8 +11,8 @@ class CartRouter:
 
     def allow_relation(self, obj1, obj2, **hints):
         if (
-            obj1._meta.app_label == 'cart' and
-            obj2._meta.app_label == 'cart'
+                obj1._meta.app_label == 'cart' and
+                obj2._meta.app_label == 'cart'
         ):
             return True
         return None
