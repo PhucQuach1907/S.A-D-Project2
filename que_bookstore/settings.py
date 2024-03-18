@@ -115,7 +115,8 @@ DATABASE_ROUTERS = [
     'cart.routers.CartRouter',
     'clothes.routers.ClothesRouter',
     'mobile.routers.MobileRouter',
-    'user.routers.UserRouter'
+    'user.routers.UserRouter',
+    'manager.routers.ManagerRouter'
 ]
 
 # Password validation
