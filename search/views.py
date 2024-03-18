@@ -3,38 +3,40 @@ import speech_recognition as sr
 import tensorflow as tf
 from PIL import Image
 from django.shortcuts import render
-from rest_framework import status, viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from book.models import Book
-from mobile.models import Mobile
 from book.serializers import BookSerializer
+from clothes.models import Clothes
+from clothes.serializers import ClothesSerializer
+from mobile.models import Mobile
 from mobile.serializers import MobileSerializer
 
 
 # Create your views here.
-class SearchBookAPI(APIView):
+class SearchAPI(APIView):
     def get(self, request):
         searched = request.GET.get('searched')
-        if searched:
-            books = Book.objects.filter(name__icontains=searched).order_by('name')
+        type = request.GET.get('type')
+        if searched and type == '1':
+            products = Book.objects.filter(name__icontains=searched).order_by('name')
+        elif searched and type == '2':
+            products = Mobile.objects.filter(name__icontains=searched).order_by('name')
+        elif searched and type == '3':
+            products = Clothes.objects.filter(name__icontains=searched).order_by('name')
         else:
-            books = Book.objects.none()
+            products = Book.objects.none()
 
-        serializer = BookSerializer(books, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class SearchMobileAPI(APIView):
-    def get(self, request):
-        searched = request.GET.get('searched')
-        if searched:
-            mobiles = Mobile.objects.filter(name__icontains=searched).order_by('name')
+        if type == '1':
+            serializer = BookSerializer(products, many=True)
+        elif type == '2':
+            serializer = MobileSerializer(products, many=True)
+        elif type == '3':
+            serializer = ClothesSerializer(products, many=True)
         else:
-            mobiles = Mobile.objects.none()
-
-        serializer = MobileSerializer(mobiles, many=True)
+            serializer = BookSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -56,27 +58,75 @@ def preprocess_image(image):
     return image
 
 
-def search_by_image(request):
-    uploaded_image = request.FILES['image']
-    searched_image = Image.open(uploaded_image)
+class SearchImageAPI(APIView):
+    def post(self, request):
+        type = request.data.get('type')
+        if 'image' not in request.FILES:
+            return Response({"error": "No image uploaded"}, status=status.HTTP_400_BAD_REQUEST)
 
-    image_features = extract_features(searched_image)
+        uploaded_image = request.FILES['image']
 
-    all_books = Book.objects.all()
+        try:
+            searched_image = Image.open(uploaded_image)
+        except Exception as e:
+            return Response({"error": f"Error opening image: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
-    threshold = 50
+        image_features = extract_features(searched_image)
 
-    books = []
-    for book in all_books:
-        book_image = Image.open(book.image)
-        book_features = extract_features(book_image)
-        distance = np.linalg.norm(image_features - book_features)
-        if distance < threshold:
-            books.append(book)
+        threshold = 50
 
-    context = {'books': books}
+        if type == '1':
+            all_books = Book.objects.all()
+            matched_books = []
+            for book in all_books:
+                try:
+                    book_image = Image.open(book.image)
+                    book_features = extract_features(book_image)
+                    distance = np.linalg.norm(image_features - book_features)
+                    if distance < threshold:
+                        matched_books.append(book)
+                except Exception as e:
+                    print(f"Error processing image for book {book.id}: {str(e)}")
 
-    return render(request, 'search.html', {'context': context})
+            serializer = BookSerializer(matched_books, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        elif type == '2':
+            all_mobiles = Mobile.objects.all()
+            matched_mobiles = []
+            for mobile in all_mobiles:
+                try:
+                    mobile_image = Image.open(mobile.image)
+                    mobile_features = extract_features(mobile_image)
+                    distance = np.linalg.norm(image_features - mobile_features)
+                    if distance < threshold:
+                        matched_mobiles.append(mobile)
+                except Exception as e:
+                    print(f"Error processing image for mobile {mobile.id}: {str(e)}")
+
+            serializer = MobileSerializer(matched_mobiles, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        elif type == '3':
+            all_clothes = Clothes.objects.all()
+            matched_clothes = []
+            for cloth in all_clothes:
+                try:
+                    cloth_image = Image.open(cloth.image)
+                    cloth_features = extract_features(cloth_image)
+                    distance = np.linalg.norm(image_features - cloth_features)
+                    if distance < threshold:
+                        matched_clothes.append(cloth)
+                except Exception as e:
+                    print(f"Error processing image for mobile {cloth.id}: {str(e)}")
+
+            serializer = ClothesSerializer(matched_clothes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        else:
+            products = Book.objects.none()
+            serializer = BookSerializer(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def search_by_voice(request):
@@ -93,3 +143,24 @@ def search_by_voice(request):
         'books': books
     }
     return render(request, 'search.html', {'context': context, 'searched': searched})
+
+
+class SearchByVoiceAPI(APIView):
+    def post(self, request):
+        recognizer = sr.Recognizer()
+
+        try:
+            audio_file = request.FILES['audio']
+        except KeyError:
+            return Response({"error": "No audio file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+        with sr.AudioFile(audio_file) as source:
+            audio_data = recognizer.record(source)
+
+        try:
+            searched = recognizer.recognize_google(audio_data)
+            books = Book.objects.filter(name__icontains=searched).order_by('name')
+            serializer = BookSerializer(books, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except sr.UnknownValueError:
+            return Response({"error": "Unable to recognize audio"}, status=status.HTTP_400_BAD_REQUEST)

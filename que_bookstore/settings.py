@@ -39,9 +39,14 @@ INSTALLED_APPS = [
     'api',
     'book',
     'cart',
+    'checkout_and_order',
+    'clothes',
     'djongo',
-    'search',
+    'manager',
     'mobile',
+    'payment',
+    'search',
+    'shipment',
     'rest_framework'
 ]
 
@@ -98,7 +103,8 @@ DATABASES = {
 DATABASE_ROUTERS = [
     'book.routers.BookRouter',
     'cart.routers.CartRouter',
-    'mobile.routers.MobileRouter'
+    'clothes.routers.ClothesRouter',
+    'mobile.routers.MobileRouter',
 ]
 
 # Password validation

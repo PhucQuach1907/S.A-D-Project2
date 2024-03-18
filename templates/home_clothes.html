@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include "search.html" %}
+    <div id="clothes-list"></div>
+    <script>
+        document.getElementById('search-by-word').addEventListener('submit', handleSearchCloth);
+        document.getElementById('imageForm').addEventListener('change', handleSearchImageCloth);
+        displayClothes();
+    </script>
+{% endblock content %}

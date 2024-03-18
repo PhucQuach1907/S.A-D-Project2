@@ -89,8 +89,9 @@ function handleSearchBook(event) {
 
     const searchInput = document.getElementById('search-by-word-input');
     const searched = searchInput.value.trim();
+    const type = 1;
     if (searched) {
-        fetch(`http://127.0.0.1:8000/api/search-book/?searched=${searched}`)
+        fetch(`http://127.0.0.1:8000/api/search?searched=${searched}&type=${type}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -106,4 +107,37 @@ function handleSearchBook(event) {
     } else {
         displayBooks();
     }
+}
+
+function handleSearchImageBook(event) {
+    const input = document.getElementById('image');
+    const file = input.files[0];
+    if (!file) {
+        alert("Please select an image.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const type = 1;
+    formData.append('type', type);
+
+    fetch(`http://127.0.0.1:8000/api/search-image/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displaySearchedBooks(data);
+        })
+        .catch(error => console.error('Error:', error));
 }

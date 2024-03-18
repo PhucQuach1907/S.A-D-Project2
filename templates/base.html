@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/book.js' %}"></script>
     <script src="{% static 'js/mobile.js' %}"></script>
     <script src="{% static 'js/cart.js' %}"></script>
-    <title>Bookstore</title>
+    <script src="{% static 'js/clothes.js' %}"></script>
+    <title>Tạp hóa</title>
 </head>
 <body>
 <nav>
-    <a href="{% url 'home_book' %}">Book Store</a>
-    <a href="{% url 'home_mobile' %}">Mobile Store</a>
+    <a href="{% url 'home_book' %}">Books</a>
+    <a href="{% url 'home_mobile' %}">Mobiles</a>
+    <a href="{% url 'home_clothes' %}">Clothes</a>
     <a href="{% url 'cart_view' %}"><i class="fa-solid fa-cart-shopping"></i></a>
 </nav>
 <div class="container">

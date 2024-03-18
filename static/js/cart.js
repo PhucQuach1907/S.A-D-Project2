@@ -44,6 +44,7 @@ function displayCartItems() {
                 const authorParagraph = document.createElement('p');
                 const publisherParagraph = document.createElement('p')
                 const producerParagraph = document.createElement('p');
+                const brandParagraph = document.createElement('p');
                 const quantityParagraph = document.createElement('p');
                 quantityParagraph.textContent = 'Quantity: ' + item.quantity;
                 const subtotalParagraph = document.createElement('p');
@@ -88,10 +89,27 @@ function displayCartItems() {
                         .catch(error => console.error('Error fetching mobile data:', error));
                 }
 
+                if (item.type === 'cloth') {
+                    fetch(`http://127.0.0.1:8000/api/clothes/${item.product_id}/`)
+                        .then(response => response.json())
+                        .then(clothData => {
+                            if (clothData) {
+                                if (clothData.image) {
+                                    ImageDiv.appendChild(getImage(clothData.image));
+                                }
+
+                                nameParagraph.textContent = 'Name: ' + clothData.name;
+                                brandParagraph.textContent = 'Brand: ' + clothData.brand_name;
+                            }
+                        })
+                        .catch(error => console.error('Error fetching mobile data:', error));
+                }
+
                 cartItemInfoDiv.appendChild(nameParagraph);
                 if (authorParagraph) cartItemInfoDiv.appendChild(authorParagraph);
                 if (publisherParagraph) cartItemInfoDiv.appendChild(publisherParagraph);
                 if (producerParagraph) cartItemInfoDiv.appendChild(producerParagraph);
+                if (brandParagraph) cartItemInfoDiv.appendChild(brandParagraph);
                 cartItemInfoDiv.appendChild(quantityParagraph);
                 cartItemInfoDiv.appendChild(subtotalParagraph);
                 cartItemInfoDiv.appendChild(removeButton);

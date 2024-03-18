@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.db import models
 
 from book.models import Book
+from clothes.models import Clothes
 from mobile.models import Mobile
 
 
@@ -30,6 +31,12 @@ class CartItem(models.Model):
                 mobile = Mobile.objects.using('mongodb').get(id=self.product_id)
                 return mobile
             except Mobile.DoesNotExist:
+                return None
+        elif self.type == 'cloth':
+            try:
+                cloth = Clothes.objects.using('mongodb').get(id=self.product_id)
+                return cloth
+            except Clothes.DoesNotExist:
                 return None
 
     @property

@@ -26,5 +26,6 @@ urlpatterns = [
     path('', lambda request: redirect('/book-store/')),
     path('book-store/', include('book.urls')),
     path('mobile-store/', include('mobile.urls')),
+    path('clothes-store/', include('clothes.urls')),
     path('search/', include('search.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
