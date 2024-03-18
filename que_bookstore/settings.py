@@ -27,6 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,10 +54,13 @@ INSTALLED_APPS = [
     'payment',
     'search',
     'shipment',
-    'rest_framework'
+    'user',
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,6 +115,7 @@ DATABASE_ROUTERS = [
     'cart.routers.CartRouter',
     'clothes.routers.ClothesRouter',
     'mobile.routers.MobileRouter',
+    'user.routers.UserRouter'
 ]
 
 # Password validation
@@ -157,3 +168,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+AUTH_USER_MODEL = 'user.AppUser'
