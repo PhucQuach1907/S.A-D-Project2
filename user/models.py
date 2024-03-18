@@ -7,9 +7,12 @@ from .managers import *
 # Create your models here.
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50, blank=True)
+
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+
     date_joined = models.DateTimeField(auto_now_add=True)
     groups = models.ManyToManyField(Group, verbose_name='groups', blank=True,
                                     related_name='user_groups')
@@ -23,6 +26,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = 'app_user'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
     def __str__(self):
         return self.username
