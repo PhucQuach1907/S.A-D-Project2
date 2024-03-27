@@ -18,12 +18,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', include('user.urls')),
+    path('add-product/', TemplateView.as_view(template_name='add_product.html'), name='add_product'),
+    # path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('cart/', include('cart.urls')),
-    path('', lambda request: redirect('/book-store/')),
     path('book-store/', include('book.urls')),
     path('mobile-store/', include('mobile.urls')),
     path('clothes-store/', include('clothes.urls')),

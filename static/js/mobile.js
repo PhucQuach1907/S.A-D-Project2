@@ -31,7 +31,7 @@ function displayMobile(mobile, mobileList) {
     const form = document.createElement('form');
     form.className = 'book_button';
     form.method = 'POST';
-    form.action = 'mobiles/' + mobile.id + '/';
+    form.action = 'mobiles/add-to-cart/' + mobile.id + '/';
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = 'csrfmiddlewaretoken';

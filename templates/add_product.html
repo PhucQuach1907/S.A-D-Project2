@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="label-input">
+        <label for="product_type" id="product_type_label">Product Type:</label>
+        <select name="product_type" id="product_type" onchange="toggleFields()">
+            <option value="book">Book</option>
+            <option value="mobile">Mobile</option>
+            <option value="cloth">Cloth</option>
+        </select>
+    </div>
+    
+    <form method="POST" id="add_book_form" class="form" action='{% url 'create_book' %}' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="label-input">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" autocomplete="off">
+        </div>
+        {% if form.errors.image %}
+            <p class="error">{{ form.errors.image.0 }}</p>
+        {% endif %}
+    
+        <div class="label-input">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+        </div>
+        {% if form.errors.name %}
+            <p class="error">{{ form.errors.name.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" autocomplete="off">
+        </div>
+        {% if form.errors.author %}
+            <p class="error">{{ form.errors.author.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="publisher">Publisher:</label>
+            <input type="text" id="publisher" name="publisher" autocomplete="off">
+        </div>
+        {% if form.errors.publisher %}
+            <p class="error">{{ form.errors.publisher.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="0" autocomplete="off">
+        </div>
+        {% if form.errors.quantity %}
+            <p class="error">{{ form.errors.quantity.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" autocomplete="off">
+        </div>
+        {% if form.errors.price %}
+            <p class="error">{{ form.errors.price.0 }}</p>
+        {% endif %}
+    
+        <button type="submit">Add</button>
+    </form>
+    
+    <form method="POST" id="add_mobile_form" class="form" action='{% url 'create_mobile' %}' enctype="multipart/form-data" hidden="hidden">
+        {% csrf_token %}
+        <div class="label-input">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" autocomplete="off">
+        </div>
+        {% if form.errors.image %}
+            <p class="error">{{ form.errors.image.0 }}</p>
+        {% endif %}
+    
+        <div class="label-input">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+        </div>
+        {% if form.errors.name %}
+            <p class="error">{{ form.errors.name.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="producer">Producer:</label>
+            <input type="text" id="producer" name="producer" autocomplete="off">
+        </div>
+        {% if form.errors.producer %}
+            <p class="error">{{ form.errors.producer.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="0" autocomplete="off">
+        </div>
+        {% if form.errors.quantity %}
+            <p class="error">{{ form.errors.quantity.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" autocomplete="off">
+        </div>
+        {% if form.errors.price %}
+            <p class="error">{{ form.errors.price.0 }}</p>
+        {% endif %}
+    
+        <button type="submit">Add</button>
+    </form>
+    
+    <form method="POST" id="add_cloth_form" class="form" action='{% url 'create_cloth' %}' enctype="multipart/form-data" hidden="hidden">
+        {% csrf_token %}
+        <div class="label-input">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" autocomplete="off">
+        </div>
+        {% if form.errors.image %}
+            <p class="error">{{ form.errors.image.0 }}</p>
+        {% endif %}
+    
+        <div class="label-input">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+        </div>
+        {% if form.errors.name %}
+            <p class="error">{{ form.errors.name.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="brand_name">Brand:</label>
+            <input type="text" id="brand_name" name="brand_name" autocomplete="off">
+        </div>
+        {% if form.errors.brand_name %}
+            <p class="error">{{ form.errors.brand_name.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="0" autocomplete="off">
+        </div>
+        {% if form.errors.quantity %}
+            <p class="error">{{ form.errors.quantity.0 }}</p>
+        {% endif %}
+        
+        <div class="label-input">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" autocomplete="off">
+        </div>
+        {% if form.errors.price %}
+            <p class="error">{{ form.errors.price.0 }}</p>
+        {% endif %}
+    
+        <button type="submit">Add</button>
+    </form>
+    
+    <script>
+        const selectedProduct = localStorage.getItem('selectedProduct');
+        const productType = document.getElementById("product_type");
+        productType.value = selectedProduct;
+        
+        const add_book_form = document.getElementById("add_book_form");
+        const add_mobile_form = document.getElementById("add_mobile_form");
+        const add_cloth_form = document.getElementById("add_cloth_form");
+
+        if (selectedProduct === "book") {
+            add_book_form.hidden = false;
+            add_mobile_form.hidden = true;
+            add_cloth_form.hidden = true;
+        } else if (selectedProduct === "mobile") {
+            add_book_form.hidden = true;
+            add_mobile_form.hidden = false;
+            add_cloth_form.hidden = true;
+        } else if (selectedProduct === "cloth") {
+            add_book_form.hidden = true;
+            add_mobile_form.hidden = true;
+            add_cloth_form.hidden = false;
+        }
+        
+        function toggleFields() {
+            const productType = document.getElementById("product_type").value;
+            localStorage.setItem('selectedProduct', productType);
+            
+            const add_book_form = document.getElementById("add_book_form");
+            const add_mobile_form = document.getElementById("add_mobile_form");
+            const add_cloth_form = document.getElementById("add_cloth_form");
+
+            if (productType === "book") {
+                add_book_form.hidden = false;
+                add_mobile_form.hidden = true;
+            } else if (productType === "mobile") {
+                add_book_form.hidden = true;
+                add_mobile_form.hidden = false;
+            } else if (productType === "cloth") {
+                add_book_form.hidden = true;
+                add_mobile_form.hidden = true;
+                add_cloth_form.hidden = false;
+            }
+        }
+    </script>
+{% endblock content %}

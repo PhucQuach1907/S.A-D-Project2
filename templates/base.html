@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/add_product.css' %}">
     <script src="{% static 'js/base.js' %}"></script>
     <script src="{% static 'js/book.js' %}"></script>
     <script src="{% static 'js/mobile.js' %}"></script>
@@ -15,10 +16,28 @@
 </head>
 <body>
 <nav>
-    <a href="{% url 'home_book' %}">Books</a>
-    <a href="{% url 'home_mobile' %}">Mobiles</a>
-    <a href="{% url 'home_clothes' %}">Clothes</a>
-    <a href="{% url 'cart_view' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+    <div class="dropdown">
+        {% if user.is_authenticated %}
+            <button class="username">Hello, {{ user.username }}</button>
+            <div class="dropdown-content">
+                {% if user.is_superuser %}
+                    <a href="{% url 'add_product' %}">Add Product</a>
+                {% endif %}
+                <a href="{% url 'user_profile' %}"><i class="fa-solid fa-user"></i></a>
+                <a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </div>
+        {% else %}
+            <button class="login-btn">
+                <a href="{% url 'login' %}">Login</a>
+            </button>
+        {% endif %}
+    </div>
+    <div class="link-container">
+        <a href="{% url 'home_book' %}">Books</a>
+        <a href="{% url 'home_mobile' %}">Mobiles</a>
+        <a href="{% url 'home_clothes' %}">Clothes</a>
+        <a href="{% url 'cart_view' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+    </div>
 </nav>
 <div class="container">
     {% block content %}{% endblock content %}

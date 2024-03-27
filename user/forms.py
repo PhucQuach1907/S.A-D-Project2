@@ -1,15 +1,15 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-
-from .models import AppUser
-
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm):
-        model = AppUser
-        fields = ('email', 'username')
+from django import forms
+from .models import CustomUser
 
 
-class CustomUserChangeForm(UserChangeForm):
+class SignUpForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
-        model = AppUser
-        fields = ('email', 'username')
+        model = CustomUser
+        fields = ['username', 'email', 'password']
+
+
+class SignInForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)

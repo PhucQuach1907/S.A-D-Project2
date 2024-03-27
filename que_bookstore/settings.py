@@ -37,7 +37,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'checkout_and_order',
     'clothes',
     'djongo',
-    'manager',
     'mobile',
     'payment',
     'search',
@@ -68,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middlewares.AddUserToContextMiddleware',
 ]
 
 ROOT_URLCONF = 'que_bookstore.urls'
@@ -116,7 +116,6 @@ DATABASE_ROUTERS = [
     'clothes.routers.ClothesRouter',
     'mobile.routers.MobileRouter',
     'user.routers.UserRouter',
-    'manager.routers.ManagerRouter'
 ]
 
 # Password validation
@@ -167,7 +166,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
-AUTH_USER_MODEL = 'user.AppUser'
+AUTH_USER_MODEL = 'user.CustomUser'

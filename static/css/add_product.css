@@ -1,0 +1,85 @@
+.label-input {
+    display: flex;
+    margin-top: 20px;
+}
+
+.label-input label {
+    font-weight: bold;
+}
+
+.label-input #product_type_label {
+    width: 280px;
+}
+
+.label-input select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>'); /* Icon mũi tên */
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 20px auto;
+    cursor: pointer;
+}
+
+.label-input select:hover {
+    border-color: #999;
+}
+
+.label-input select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form .label-input label {
+    width: 30%;
+}
+
+.form .label-input input[type="text"],
+.form .label-input input[type="number"],
+.form .label-input select {
+    width: 70%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form .label-input input[type="file"] {
+    width: 70%;
+    margin-bottom: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: Red;
+}

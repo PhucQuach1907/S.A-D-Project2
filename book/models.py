@@ -13,12 +13,12 @@ class Category(models.Model):
 
 
 class Book(models.Model):
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    image = models.ImageField(upload_to='images/')
     name = models.CharField(max_length=50)
     author = models.CharField(max_length=50)
     publisher = models.CharField(max_length=50)
-    quantity = models.IntegerField(default=1)
-    categories = models.ArrayReferenceField(to=Category, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(default=0)
+    categories = models.ArrayReferenceField(to=Category, on_delete=models.CASCADE, blank=True, null=True)
     price = models.DecimalField(max_digits=9, decimal_places=2)
 
     class Meta:
