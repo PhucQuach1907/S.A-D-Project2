@@ -15,12 +15,12 @@ class Type(models.Model):
 
 
 class Mobile(models.Model):
-    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    image = models.ImageField(upload_to='images/')
     name = models.CharField(max_length=50)
     producer = models.CharField(max_length=50)
     type = models.ArrayReferenceField(to=Type, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField()
-    price = models.DecimalField(max_digits=9, decimal_places=2)
+    price = models.DecimalField(max_digits=18, decimal_places=2)
 
     class Meta:
         db_table = 'mobiles'

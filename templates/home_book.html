@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% include "search.html" %}
-    <div id="book-list"></div>
+    <div id="book-list" data-is_superuser="{{ user.is_superuser }}"></div>
     <script>
         document.getElementById('search-by-word').addEventListener('submit', handleSearchBook);
         document.getElementById('imageForm').addEventListener('change', handleSearchImageBook);

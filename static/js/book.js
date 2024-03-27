@@ -34,7 +34,7 @@ function displayBook(book, bookList) {
     const form = document.createElement('form');
     form.className = 'book_button';
     form.method = 'POST';
-    form.action = 'books/' + book.id + '/';
+    form.action = 'books/add-to-cart/' + book.id + '/';
     const csrfInput = document.createElement('input');
     csrfInput.type = 'hidden';
     csrfInput.name = 'csrfmiddlewaretoken';

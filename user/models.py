@@ -1,33 +1,19 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
-from .managers import *
 
-
-# Create your models here.
-class AppUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=50, blank=True)
-
-    is_staff = models.BooleanField(default=False)
+class CustomUser(AbstractUser):
+    is_normal_user = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_manager = models.BooleanField(default=False)
 
-    date_joined = models.DateTimeField(auto_now_add=True)
-    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True,
-                                    related_name='user_groups')
-    user_permissions = models.ManyToManyField(Permission, verbose_name='user permissions', blank=True,
-                                              related_name='user_permissions')
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
-
-    class Meta:
-        db_table = 'app_user'
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
-
-    def __str__(self):
-        return self.username
+    def clean(self):
+        super().clean()
+        if not self.username.isalnum():
+            raise ValidationError(_('Username must contain only letters and digits.'))
+        if len(self.username) < 6:
+            raise ValidationError(_('Username must be at least 6 characters.'))
+        if len(self.password) < 8:
+            raise ValidationError(_('Password must be at least 8 characters.'))
