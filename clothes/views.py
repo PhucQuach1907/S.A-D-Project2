@@ -18,7 +18,8 @@ class ClothesViewAPI(viewsets.ModelViewSet):
         if cloth:
             cart_item, created = CartItem.objects.get_or_create(
                 product_id=cloth.id,
-                type='cloth'
+                type='cloth',
+                user_id=request.user.id
             )
             if not created:
                 cart_item.quantity += 1

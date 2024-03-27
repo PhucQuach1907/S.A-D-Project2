@@ -9,6 +9,7 @@ from mobile.models import Mobile
 
 class CartItem(models.Model):
     product_id = models.CharField(max_length=50)
+    user_id = models.CharField(max_length=50, default=0)
     type = models.CharField(max_length=50, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=1)

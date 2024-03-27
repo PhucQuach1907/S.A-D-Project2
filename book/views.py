@@ -17,7 +17,8 @@ class BookViewAPI(viewsets.ModelViewSet):
         if book:
             cart_item, created = CartItem.objects.get_or_create(
                 product_id=book.id,
-                type='book'
+                type='book',
+                user_id=request.user.id
             )
             if not created:
                 cart_item.quantity += 1

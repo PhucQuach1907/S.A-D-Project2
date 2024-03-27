@@ -17,7 +17,8 @@ class MobileViewAPI(viewsets.ModelViewSet):
         if mobile:
             cart_item, created = CartItem.objects.get_or_create(
                 product_id=mobile.id,
-                type='mobile'
+                type='mobile',
+                user_id=request.user.id
             )
             if not created:
                 cart_item.quantity += 1
